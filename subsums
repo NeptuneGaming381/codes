@@ -1,0 +1,47 @@
+# include <iostream>
+# include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+	//(void)!freopen("pairup.in", "r", stdin);
+	//(void)!freopen("pairup.out","w",stdout); 
+	long long n;
+	long long target;
+	cin >> n >> target;
+	long long arr[n];
+	for (long long i=0;i<=n-1;i++)
+	{
+		cin >> arr[i];
+	}
+	long long i=0;
+	long long j=0;
+	long long currsum=0;
+	long long ans=0;
+	while (true)
+	{
+		if (i==n)
+		{
+			break;
+		}
+		else
+		{
+			while (currsum<target)
+			{
+				if (j==n)
+				{
+					break;
+				}
+				currsum=currsum+arr[j];
+				//cout << currsum << endl;
+				j++;
+			}
+			if (currsum==target)
+			{
+				ans++;
+			}
+			i++;
+			currsum=currsum-arr[i-1];
+		}
+	}
+	cout << ans << endl;
+}
