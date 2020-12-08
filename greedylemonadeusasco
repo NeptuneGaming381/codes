@@ -1,0 +1,29 @@
+# include <iostream>
+# include <bits/stdc++.h>
+# include <cmath>
+using namespace std;
+int main()
+{
+	//(void)!freopen("lemonade.in", "r", stdin);
+	//(void)!freopen("lemonade.out","w",stdout); 
+	long long c;
+	cin >> c;
+	long long cows[c];
+	for (long long i=0;i<=c-1;i++)
+	{
+		cin >> cows[i];
+	}
+	sort(cows,cows+c);
+	reverse(cows,cows+c);
+	long long ans=0;
+	long long q=0;
+	for (long long i=0;i<=c-1;i++)
+	{
+		if (q<=cows[i])
+		{
+			ans++;
+			q++;
+		}
+	}
+	cout << ans << endl;
+}
