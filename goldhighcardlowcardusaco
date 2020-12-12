@@ -1,0 +1,132 @@
+# include <iostream>
+# include <bits/stdc++.h>
+# include <cmath>
+using namespace std;
+int main()
+{
+	freopen("cardgame.in", "r", stdin);
+	freopen("cardgame.out","w",stdout); 
+	long long n;
+	cin >> n;
+	long long els[n];
+	long long el[n];
+	for (long long i=0;i<=n-1;i++)
+	{
+		cin >> els[i];
+		el[i]=els[i];
+	}
+	sort(els,els+n);
+	long long bess[n];
+	long long temp=0;
+	for (long long i=1;i<=els[0]-1;i++)
+	{
+		bess[temp]=i;
+		temp++;
+	}
+	for (long long i=0;i<=n-2;i++)
+	{
+		for (long long j=els[i]+1;j<=els[i+1]-1;j++)
+		{
+			bess[temp]=j;
+			temp++;
+		}
+	}
+	for (long long i=els[n-1]+1;i<=2*n;i++)
+	{
+		bess[temp]=i;
+		temp++;
+	}
+	
+	// bess contains all cards bessie has
+	// el contains all cards elsie has
+	long long i=0;
+	long long j=0;
+	long long ans=0;
+	sort(bess,bess+n);
+	reverse(bess,bess+n);
+	long long lol=floor(n/2);
+	long long bessfirst[lol];
+	long long besssecond[lol];
+	long long elfirst[lol];
+	long long elsecond[lol];
+	for (long long i=0;i<=floor(n/2)-1;i++)
+	{
+		bessfirst[i]=bess[i];
+		elfirst[i]=el[i];
+	}
+	for (long long i=floor(n/2);i<=n-1;i++)
+	{
+		besssecond[i-lol]=bess[i];
+		elsecond[i-lol]=el[i];
+	}
+	/*sort(elfirst,elfirst+lol);
+	sort(elsecond,elsecond+lol);
+	reverse(elsecond,elsecond+lol);
+	sort(besssecond,besssecond+lol);
+	sort(bessfirst,bessfirst+lol);
+	reverse(bessfirst,bessfirst+lol);*/
+	
+	
+	sort(elfirst,elfirst+lol);
+	sort(elsecond,elsecond+lol);
+	sort(bessfirst,bessfirst+lol);
+	sort(besssecond,besssecond+lol);
+	reverse(besssecond,besssecond+lol);
+	reverse(elsecond,elsecond+lol);
+	
+	//  bess first - largest elements of bess, el first - smallest elements of first n/2 of el 
+	// bess second - smallest elements of bess, elsecond - largest elements of last n/2 of el
+	while (true)
+	{
+		// i matches to bess, j matches to el
+		if (i==floor(n/2) || j==floor(n/2))
+		{
+			break;
+		}
+		else
+		{
+			if (bessfirst[i]>elfirst[j])
+			{
+				//cout << bessfirst[i] << " " << elfirst[j] << endl;
+				i++;
+				j++;
+				ans++;
+			}
+			else
+			{
+				i++;
+			}
+		}
+	}
+	for (long long i=0;i<=floor(n/2)-1;i++)
+	{
+		//cout << besssecond[i] << " ";
+	}
+	//cout << endl;
+	i=0;
+	j=0;
+	while (true)
+	{
+		// i matches to bess, j matches to el
+		if (i==floor(n/2) || j==floor(n/2))
+		{
+			break;
+		}
+		else
+		{
+			if (besssecond[i]<elsecond[j])
+			{
+				//cout << besssecond[i] << " " << elsecond[j] << endl;
+				i++;
+				j++;
+				ans++;
+			}
+			else
+			{
+				i++;
+			}
+		}
+	}
+	cout << ans << endl;
+	// in the first n/2 cards played, match the lowest cards of bess to what elsie plays
+}
