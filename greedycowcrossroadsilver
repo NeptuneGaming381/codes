@@ -1,0 +1,43 @@
+# include <iostream>
+# include <bits/stdc++.h>
+# include <cmath>
+using namespace std;
+int main()
+{
+	freopen("helpcross.in", "r", stdin);
+	freopen("helpcross.out","w",stdout); 
+	long long chi;
+	long long c;
+	cin >> chi >> c;
+	multiset<long long> chicken;
+	vector<pair <long long , long long> > cow;
+	long long tp;
+	for (long long i=0;i<=chi-1;i++)
+	{
+		cin >> tp;
+		chicken.insert(tp);
+	}
+	long long x;
+	long long y;
+	for (long long i=0;i<=c-1;i++)
+	{
+		cin >> x >> y;
+		cow.push_back({y,x});
+	}
+	sort(cow.begin(),cow.end());
+	// i relates to cow
+	// j relates to chicken
+	vector<pair <long long, long long> >::iterator i;
+	long long ans=0;
+	for (i=cow.begin();i<cow.end();i++)
+	{
+		auto k=chicken.lower_bound(i->second);
+		if (k!=chicken.end() && *k<=i->first)
+		{
+			//cout << chicken[j] << " " << i->second << " " << i->first << endl;
+			ans++;
+			chicken.erase(k);
+		}
+	}
+	cout << ans << endl;
+}
