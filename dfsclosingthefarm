@@ -1,0 +1,94 @@
+# include <iostream>
+# include <bits/stdc++.h>
+# include <cmath>
+using namespace std;
+vector<long long> adj[10000];
+bool closedall[10000];
+bool vis[100000];
+void dfs (long long s)
+{
+//	closedall.push_back(closed);
+	vis[s]=true;
+	for (long long next : adj[s])
+	{
+		if (!vis[next] && closedall[next]==false)
+		{
+			dfs(next);
+		}
+	}
+}
+int main()
+{
+	//freopen("closing.in","r",stdin); 
+	//freopen("closing.out","w",stdout); 
+	long long farms;
+	long long paths;
+	cin >> farms >> paths;
+	long long x;
+	long long y;
+	for (long long i=0;i<=paths-1;i++)
+	{
+		cin >> x >> y;
+		adj[x].push_back(y);
+		adj[y].push_back(x);
+	}
+	for (long long i=0;i<=9999;i++)
+	{
+		vis[i]=false;
+		closedall[i]=false;
+	}
+	dfs(1);
+	bool ans=true;
+	for (long long i=1;i<=farms-1;i++)
+	{
+		if (vis[i]==false)
+		{
+			ans=false;
+			break;
+		}
+	}
+	long long rem;
+	long long remall[farms];
+	for (long long i=0;i<=farms-1;i++)
+	{
+		cin >> rem;
+		remall[i]=rem;
+	}
+	if (ans==true)
+	{
+		cout << "YES" << endl;
+	}
+	else
+	{
+		cout << "NO" << endl;
+	}
+	for (long long i=0;i<=farms-2;i++)
+	{
+		ans=true;
+		// remove all occurences of element remall[i] from the vector
+		//closedall.push_back(remall[i]);
+		for (long long i=0;i<=9999;i++)
+		{
+			vis[i]=false;
+			//closedall[i]=false;
+		}
+		closedall[remall[i]]=true;
+		dfs(remall[i+1]);
+		for (long long i=1;i<=farms-1;i++)
+		{
+			if (closedall[i]==false && vis[i]==false)
+			{
+				ans=false;
+			}
+		}
+		if (ans==true)
+		{
+			cout << "YES" << endl;
+		}
+		else
+		{
+			cout << "NO" << endl;
+		}
+	}
+	// OneDrive\Desktop\rand
+}
