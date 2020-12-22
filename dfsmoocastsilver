@@ -1,0 +1,58 @@
+# include <iostream>
+# include <bits/stdc++.h>
+# include <cmath>
+using namespace std;
+vector<long long> adj[10000];
+bool closedall[10000];
+bool vis[100000];
+long long x[10000];
+long long y[10000];
+long long st[10000];
+long long curr=0;
+void dfs (long long s)
+{
+//	closedall.push_back(closed);
+	vis[s]=true;
+	for (long long next=0;next<=9999;next++)
+	{
+		//if (!vis[next] && pow((pow(x[s]-x[next],2)+pow(y[s]-y[next],2)),0.5)<=st[s])
+		//if (!vis[next] && (pow(x[s]-x[next],2)+pow(y[s]-y[next],2)) <= (st[s] * st[s]))
+		if (!vis[next] && ( (x[s]-x[next])*(x[s]-x[next]) + (y[s]-y[next])*(y[s]-y[next]) <= (st[s] * st[s]) ) )
+		{
+			dfs(next);
+		}
+	}
+}
+int main()
+{
+	//freopen("moocast.in","r",stdin); 
+	//freopen("moocast.out","w",stdout);
+	long long cows;
+	cin >> cows;
+	for (long long i=0;i<=cows-1;i++)
+	{
+		cin >> x[i] >> y[i] >> st[i];
+		
+	}
+	long long ans[cows];
+	for (long long i=0;i<=cows-1;i++)
+	{
+		for (long long j=0;j<=9999;j++)
+		{
+			vis[j]=false;
+		}
+		curr=0;
+		dfs(i);
+		long long tot=0;
+		for (long long j=0;j<=cows-1;j++)
+		{
+			if (vis[j]==true)
+			{
+				tot++;
+			}
+		}
+		ans[i]=tot;
+	}
+	cout << *max_element(ans,ans+cows);
+	// OneDrive\Desktop\rand
+}
