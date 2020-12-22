@@ -1,0 +1,87 @@
+# include <iostream>
+# include <bits/stdc++.h>
+# include <cmath>
+# include <numeric>
+using namespace std;
+vector<long long> adj[100000];
+bool vis[100001];
+long long x[100001];
+long long y[100001];
+long long st[100001];
+long long curr=0;
+long long minx;
+long long maxx;
+long long miny;
+long long maxy;
+long long max_peri;
+
+void dfs (long long s)
+{
+	vis[s]=true;
+	
+	minx = std::min(minx, x[s-1]);
+	miny = std::min(miny, y[s-1]);
+	maxx = std::max(maxx, x[s-1]);
+	maxy = std::max(maxy, y[s-1]);	
+	long long peri = 2 * (maxx - minx + maxy - miny );
+	
+	if (max_peri == -1)
+		max_peri = peri;
+	else if (max_peri < peri)
+		max_peri = peri;
+		
+	for (long long next : adj[s])
+	{
+		if (!vis[next])
+		{
+			dfs(next);
+		}
+	}
+}
+int main()
+{
+	freopen("fenceplan.in","r",stdin); 
+	freopen("fenceplan.out","w",stdout);
+	long long cows;
+	long long moo;
+	cin >> cows >> moo;
+	for (long long i=0;i<=cows-1;i++)
+	{
+		cin >> x[i] >> y[i];
+	}
+	long long a;
+	long long b;
+	for (long long i=0;i<=moo-1;i++)
+	{
+		cin >> a >> b;
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	vector<long long>ans;
+	for (long long j=1;j<=cows;j++)
+	{
+		vis[j]=false;
+	}
+	while (true)
+	{
+		auto itr = find(vis+1, vis + cows+1, false);
+		auto it2=distance(vis, itr);
+		if (it2>=cows+1)
+		{
+			break;
+		}
+		else
+		{
+			minx = 1e8 + 1;
+			miny = 1e8 + 1;
+			maxx = -1;
+			maxy = -1;
+			max_peri = -1;
+			dfs(it2);
+			ans.push_back(max_peri);
+		}
+	}
+	cout << *min_element(ans.begin(),ans.end());
+	
+	// OneDrive\Desktop\rand
+}
