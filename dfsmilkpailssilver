@@ -1,0 +1,129 @@
+# include <iostream>
+# include <bits/stdc++.h>
+# include <cmath>
+using namespace std;
+vector<long long> adj[200001];
+//bool vis[200001];
+/*void dfs (long long s)
+{
+	vis[s]=true;
+	for (long long next : adj[s])
+	{
+		if (!vis[next])
+		{
+			dfs(next);
+		}
+	}
+}*/
+/*long long bfs(long long s) 
+{
+    queue<long long> q;
+    vector<bool> vis(n);
+    long long c = 0;
+    vis[s] = true;
+    q.push(s);
+    while (!q.empty())
+	{
+        long long currnode = q.front();
+        q.pop();
+        for (auto next : adj[currnode]) 
+		{
+            if (!vis[next]) 
+			{
+                vis[next] = true;
+                q.push(next);
+            }
+        }              
+        c++;
+    }
+    return c;
+}*/
+vector<string> actions = {"FILL_X", "FILL_Y", "EMPTY_X", "EMPTY_Y", "POUR_X2Y", "POUR_Y2X"};
+long long canx;
+long long cany;
+long long totmilk;
+long long ops;
+long long mindiff=1e9;
+void bfs2(long long x , long long y)
+{
+    queue<pair<long long, long long> > q;
+	bool vis[500][500]={false};
+	q.push({x,y});
+	long long steps[500][500] = {0};
+		
+	while (!q.empty())
+	{
+		pair<long long, long long> curr = q.front();
+		x=curr.first;
+		y=curr.second;
+		mindiff=min(mindiff,abs(x+y-totmilk));
+		q.pop();
+		vis[x][y] = true;
+		long long xnext=0;
+		long long ynext=0;
+		for (auto action : actions)
+		{
+			if (action=="FILL_X")
+			{
+				xnext=canx;
+				ynext=y;
+			}
+			else if (action=="FILL_Y")
+			{
+				xnext=x;
+				ynext=cany;
+			}
+			else if (action=="EMPTY_X")
+			{
+				xnext=0;
+				ynext=y;
+			}
+			else if (action=="EMPTY_Y")
+			{
+				xnext=x;
+				ynext=0;
+			}
+			else if (action=="POUR_X2Y")
+			{
+				if (x+y>cany)
+				{
+					ynext=cany;
+					xnext=x+y-cany;
+				}
+				else
+				{
+					xnext=0;
+					ynext=y+x;
+				}
+			}
+			else if (action=="POUR_Y2X")
+			{
+				if (x+y>canx)
+				{
+					xnext=canx;
+					ynext=x+y-canx;
+				}
+				else
+				{
+					ynext=0;
+					xnext=y+x;
+				}
+			}
+			if (!vis[xnext][ynext] && steps[x][y]<ops)
+			{
+				q.push({xnext,ynext});
+				steps[xnext][ynext]=steps[x][y]+1;
+			}
+		}
+	}
+}
+int main()
+{
+	//freopen("pails.in","r",stdin); 
+	//freopen("pails.out","w",stdout);
+	cin >> canx >> cany >> ops >> totmilk;
+	bfs2(0,0);
+	cout << mindiff << endl;
+	// OneDrive\Desktop\rand
+	
+}
